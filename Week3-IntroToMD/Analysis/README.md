@@ -1,0 +1,1 @@
+This directory contains the all genratred final analysis plots in Jupiter library by using simulated results in gromax of tripcage protein in solvated system and non solvated system. Density,Temprature,Potential energy,RMSD and radius of gyration ploted here.
