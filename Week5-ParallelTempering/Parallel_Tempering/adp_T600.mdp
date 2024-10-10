@@ -3,7 +3,7 @@
 define              =  
 ; integrator
 integrator          =  md 
-nsteps              =  __NSTEPS__ 
+nsteps              =  7500000 
 dt                  =  0.002
 ;
 ; removing CM translation and rotation
@@ -46,7 +46,7 @@ lincs_iter               = 4
 Tcoupl              = v-rescale 
 tc_grps             = system 
 tau_t               = 0.1
-ref_t               = 300.000 
+ref_t               = 440.000 
 ;
 ; pression
 Pcoupl              =  no
