@@ -1,0 +1,9 @@
+# Load molecular structure information
+MOLINFO STRUCTURE=dialaB.pdb
+
+# Define phi and psi dihedral angles using atom indices
+phi: TORSION ATOMS=5,7,9,15  # ACE:C, ALA:N, ALA:CA, ALA:C
+psi: TORSION ATOMS=7,9,15,17 # ALA:N, ALA:CA, ALA:C, NME:N
+
+# Print the phi and psi dihedral values to COLVAR file
+PRINT ARG=phi,psi FILE=COLVAR STRIDE=10
