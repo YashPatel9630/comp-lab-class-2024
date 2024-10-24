@@ -1,0 +1,11 @@
+MOLINFO STRUCTURE=dialaA.pdb
+
+# Define the dihedral angles for the backbone
+phi: TORSION ATOMS=5,7,9,15
+psi: TORSION ATOMS=7,9,15,17
+
+# Apply well-tempered metadynamics to both phi and psi
+metad: METAD ARG=phi,psi PACE=500 HEIGHT=1.2 BIASFACTOR=10 SIGMA=0.55,1.02 FILE=HILLS GRID_MIN=-pi,-pi GRID_MAX=pi,pi GRID_WFILE=grid_2d.dat GRID_WSTRIDE=10000
+
+# Print phi, psi, and bias potential values to a file
+PRINT ARG=phi,psi,metad.bias FILE=COLVAR2 STRIDE=10
