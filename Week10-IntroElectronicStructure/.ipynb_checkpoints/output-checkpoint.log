@@ -1,0 +1,42 @@
+2024-11-07:14:56:39,6 INFO     [psi4.driver.task_planner:283] PLANNING Atomic:  keywords={'function_kwargs': {}}
+2024-11-07:14:56:39,8 INFO     [psi4.driver.driver:499] Compute energy(): method=scf, basis=cc-pvdz, molecule=default, nre=9.168193296424349
+2024-11-07:14:56:41,423 INFO     [psi4.driver.driver:502] Return energy(): -76.02663273509214
+2024-11-07:15:00:54,770 INFO     [psi4.driver.task_planner:283] PLANNING Atomic:  keywords={'SCF__INTS_TOLERANCE': 1e-12, 'REFERENCE': 'UHF', 'function_kwargs': {}}
+2024-11-07:15:00:54,772 INFO     [psi4.driver.driver:499] Compute energy(): method=scf, basis=6-31g**, molecule=default, nre=6.17454856754189
+2024-11-07:15:00:54,951 INFO     [psi4.driver.driver:502] Return energy(): -38.92533462893768
+2024-11-07:15:04:17,234 INFO     [psi4.driver.task_planner:283] PLANNING Atomic:  keywords={'SCF__INTS_TOLERANCE': 1e-12, 'REFERENCE': 'RHF', 'function_kwargs': {}}
+2024-11-07:15:04:17,235 INFO     [psi4.driver.driver:617] Compute gradient(): method=scf, basis=cc-pvdz, molecule=default, nre=9.168193296424349
+2024-11-07:15:04:18,183 INFO     [psi4.driver.driver:620] Return gradient(): -76.0266327351256
+2024-11-07:15:04:18,183 INFO     [psi4.driver.driver:621] [[-0.          0.         -0.01764163]
+ [ 0.         -0.01243841  0.00882081]
+ [-0.          0.01243841  0.00882081]]
+2024-11-07:15:04:18,233 INFO     [psi4.driver.task_planner:283] PLANNING Atomic:  keywords={'CART_HESS_READ': 0, 'SCF__GUESS': 'READ', 'SCF__INTS_TOLERANCE': 1e-12, 'REFERENCE': 'RHF', 'function_kwargs': {}}
+2024-11-07:15:04:18,235 INFO     [psi4.driver.driver:617] Compute gradient(): method=scf, basis=cc-pvdz, molecule=default, nre=9.309900182572584
+2024-11-07:15:04:18,362 INFO     [psi4.driver.driver:620] Return gradient(): -76.02702266602098
+2024-11-07:15:04:18,363 INFO     [psi4.driver.driver:621] [[ 0.          0.         -0.00008799]
+ [-0.          0.00157041  0.000044  ]
+ [ 0.         -0.00157041  0.000044  ]]
+2024-11-07:15:04:18,381 INFO     [psi4.driver.task_planner:283] PLANNING Atomic:  keywords={'CART_HESS_READ': 0, 'SCF__GUESS': 'READ', 'OPTKING__INTRAFRAG_STEP_LIMIT': 1.0, 'SCF__INTS_TOLERANCE': 1e-12, 'REFERENCE': 'RHF', 'function_kwargs': {}}
+2024-11-07:15:04:18,382 INFO     [psi4.driver.driver:617] Compute gradient(): method=scf, basis=cc-pvdz, molecule=default, nre=9.300665063013044
+2024-11-07:15:04:18,499 INFO     [psi4.driver.driver:620] Return gradient(): -76.02703272937688
+2024-11-07:15:04:18,500 INFO     [psi4.driver.driver:621] [[ 0.          0.          0.00008587]
+ [ 0.         -0.00007268 -0.00004293]
+ [-0.          0.00007268 -0.00004293]]
+2024-11-07:15:08:28,961 INFO     [psi4.driver.task_planner:283] PLANNING Atomic:  keywords={'SCF__INTS_TOLERANCE': 1e-12, 'REFERENCE': 'RHF', 'function_kwargs': {}}
+2024-11-07:15:08:28,978 INFO     [psi4.driver.task_planner:283] PLANNING Atomic:  keywords={'SCF__D_CONVERGENCE': 1e-08, 'SCF__E_CONVERGENCE': 1e-08, 'SCF__INTS_TOLERANCE': 1e-12, 'REFERENCE': 'RHF', 'function_kwargs': {}}
+2024-11-07:15:08:28,979 INFO     [psi4.driver.driver:617] Compute gradient(): method=scf, basis=cc-pvdz, molecule=default, nre=9.30066506301305
+2024-11-07:15:08:29,158 INFO     [psi4.driver.driver:620] Return gradient(): -76.02703272937681
+2024-11-07:15:08:29,159 INFO     [psi4.driver.driver:621] [[-0.          0.          0.00008586]
+ [ 0.         -0.00007268 -0.00004293]
+ [-0.          0.00007268 -0.00004293]]
+2024-11-07:15:08:29,159 INFO     [psi4.driver.driver:1437] Compute hessian(): method=scf, basis=cc-pvdz, molecule=default, nre=9.30066506301305
+2024-11-07:15:08:30,540 INFO     [psi4.driver.driver:1441] Return hessian(): -76.02703272937681
+2024-11-07:15:08:30,540 INFO     [psi4.driver.driver:1442] [[-0.00007858 -0.         -0.          0.00003929 -0.          0.          0.00003929  0.          0.        ]
+ [-0.          0.78584954  0.         -0.         -0.39292477  0.30336826  0.         -0.39292477 -0.30336826]
+ [-0.          0.          0.53846879  0.          0.23574776 -0.26923439  0.         -0.23574776 -0.26923439]
+ [ 0.00003929 -0.          0.          0.00000603  0.         -0.         -0.00004532 -0.          0.        ]
+ [-0.         -0.39292477  0.23574776  0.          0.42766634 -0.26955801 -0.         -0.03474157  0.03381025]
+ [ 0.          0.30336826 -0.26923439 -0.         -0.26955801  0.25174302 -0.         -0.03381025  0.01749137]
+ [ 0.00003929  0.          0.         -0.00004532 -0.         -0.          0.00000603 -0.         -0.        ]
+ [ 0.         -0.39292477 -0.23574776 -0.         -0.03474157 -0.03381025 -0.          0.42766634  0.26955801]
+ [ 0.         -0.30336826 -0.26923439  0.          0.03381025  0.01749137 -0.          0.26955801  0.25174302]]
