@@ -1,0 +1,126 @@
+
+include ${pot}.lmp
+include kalj.lmp
+units lj
+atom_style atomic
+
+variable dimensions equal 3
+variable density equal 1.2
+variable fraca equal 0.8
+
+dimension ${dimensions}
+dimension 3
+read_restart ${prevbasename}.final.lmprestart.${steps}
+read_restart equil/kalj_T0.7_n480_v400_180000_1.final.lmprestart.${steps}
+read_restart equil/kalj_T0.7_n480_v400_180000_1.final.lmprestart.180000
+Reading restart file ...
+  restart file = 15 Sep 2022, LAMMPS = 15 Sep 2022
+  restoring atom style atomic from restart
+  orthogonal box = (0 0 0) to (7.368063 7.368063 7.368063)
+  1 by 2 by 2 MPI processor grid
+  restoring pair style lj/cut from restart
+  480 atoms
+  read_restart CPU = 0.030 seconds
+include ${pot}_particles.lmp
+include kalj_particles.lmp
+mass * 1.0 #  set mass 1.0 for all types
+
+pair_style lj/cut 2.5
+#pair coeffs type1 type2 eps sigma
+pair_coeff 1 1 1.0 1.00 2.5
+pair_coeff 1 2 1.5 0.80 2.0
+pair_coeff 2 2 0.5 0.88 2.2
+pair_modify shift yes
+reset_timestep 0
+
+print "Setting up equilibration run"
+Setting up equilibration run
+variable dumptime2 equal ${steps}/2000
+variable dumptime2 equal 180000/2000
+dump 1 all dcd ${dumptime2} ${basename}.unwrap.dcd
+dump 1 all dcd 90 ${basename}.unwrap.dcd
+dump 1 all dcd 90 prod/kalj_T0.7_n480_v400_prod_180000_1.unwrap.dcd
+#dump 2 all dcd ${dumptime2} ${basename}.dcd
+dump_modify 1 unwrap yes
+#dump_modify 2 unwrap no
+
+restart ${restarttime} ${basename}.restart
+restart 180000 ${basename}.restart
+restart 180000 prod/kalj_T0.7_n480_v400_prod_180000_1.restart
+restart ${steps} ${basename}.final.lmprestart
+restart 180000 ${basename}.final.lmprestart
+restart 180000 prod/kalj_T0.7_n480_v400_prod_180000_1.final.lmprestart
+
+thermo ${thermotime}
+thermo 6000
+timestep ${timestep}
+timestep 0.003
+
+neighbor 0.5 bin
+neigh_modify every 1 delay ${neighborstep} check yes
+neigh_modify every 1 delay 25 check yes
+
+#velocity all create ${temp} ${id} dist gaussian
+fix 1 all nvt temp ${temp} ${temp} ${taut}
+fix 1 all nvt temp 0.7 ${temp} ${taut}
+fix 1 all nvt temp 0.7 0.7 ${taut}
+fix 1 all nvt temp 0.7 0.7 0.3
+Resetting global fix info from restart file:
+  fix style: nvt, fix ID: 1
+
+variable steps4 equal ${steps}/4
+variable steps4 equal 180000/4
+run ${steps4}
+run 45000
+Generated 0 of 1 mixed pair_coeff terms from geometric mixing rule
+All restart file global fix info was re-assigned
+Neighbor list info ...
+  update: every = 1 steps, delay = 25 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 3
+  ghost atom cutoff = 3
+  binsize = 1.5, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.149 | 3.149 | 3.15 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0.75113336    -6.5615076      0             -5.4371548      6.3628175    
+      6000   0.68664741    -6.527639       0             -5.4998136      6.3522868    
+     12000   0.68366333    -6.5042178      0             -5.4808592      6.504997     
+     18000   0.70000417    -6.4516673      0             -5.4038486      6.8476912    
+     24000   0.70908601    -6.6241006      0             -5.5626875      5.8477343    
+     30000   0.64716735    -6.4732702      0             -5.5045416      6.6267262    
+     36000   0.70693618    -6.5387519      0             -5.4805569      6.2733254    
+     42000   0.67186458    -6.4873923      0             -5.481695       6.5260737    
+     45000   0.75068985    -6.4722189      0             -5.34853        6.7331728    
+Loop time of 5.06629 on 4 procs for 45000 steps with 480 atoms
+
+Performance: 2302274.927 tau/day, 8882.234 timesteps/s, 4.263 Matom-step/s
+99.5% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 3.2785     | 3.3439     | 3.3865     |   2.4 | 66.00
+Neigh   | 0.35803    | 0.36409    | 0.36908    |   0.7 |  7.19
+Comm    | 1.1091     | 1.1623     | 1.2288     |   4.4 | 22.94
+Output  | 0.024423   | 0.028215   | 0.036242   |   2.8 |  0.56
+Modify  | 0.12616    | 0.12805    | 0.131      |   0.5 |  2.53
+Other   |            | 0.03975    |            |       |  0.78
+
+Nlocal:            120 ave         125 max         117 min
+Histogram: 1 1 0 1 0 0 0 0 0 1
+Nghost:        1394.75 ave        1416 max        1381 min
+Histogram: 1 1 0 0 1 0 0 0 0 1
+Neighs:        6904.75 ave        7212 max        6721 min
+Histogram: 2 0 0 0 1 0 0 0 0 1
+
+Total # of neighbors = 27619
+Ave neighs/atom = 57.539583
+Neighbor list builds = 1506
+Dangerous builds = 121
+Total wall time: 0:00:05

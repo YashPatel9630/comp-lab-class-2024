@@ -1,0 +1,147 @@
+
+include ${pot}.lmp
+include kalj.lmp
+units lj
+atom_style atomic
+
+variable dimensions equal 3
+variable density equal 1.2
+variable fraca equal 0.8
+
+dimension ${dimensions}
+dimension 3
+read_restart ${prevbasename}.final.lmprestart.${prevsteps}
+read_restart equil/kalj_T0.5_n360_v300_10000000_1.final.lmprestart.${prevsteps}
+read_restart equil/kalj_T0.5_n360_v300_10000000_1.final.lmprestart.10000000
+Reading restart file ...
+  restart file = 15 Sep 2022, LAMMPS = 15 Sep 2022
+  restoring atom style atomic from restart
+  orthogonal box = (0 0 0) to (6.6943295 6.6943295 6.6943295)
+  1 by 2 by 2 MPI processor grid
+  restoring pair style lj/cut from restart
+  360 atoms
+  read_restart CPU = 0.011 seconds
+include ${pot}_particles.lmp
+include kalj_particles.lmp
+mass * 1.0 #  set mass 1.0 for all types
+
+pair_style lj/cut 2.5
+#pair coeffs type1 type2 eps sigma
+pair_coeff 1 1 1.0 1.00 2.5
+pair_coeff 1 2 1.5 0.80 2.0
+pair_coeff 2 2 0.5 0.88 2.2
+pair_modify shift yes
+reset_timestep 0
+
+print "Setting up annealing run"
+Setting up annealing run
+dump 1 all atom ${dumptime} ${basename}.lammpstrj
+dump 1 all atom 3000000 ${basename}.lammpstrj
+dump 1 all atom 3000000 equil/kalj_T0.475_n360_v300_30000000_1.lammpstrj
+#dump_modify 1 sort id scale no
+
+restart ${restarttime} ${basename}.restart
+restart 30000000 ${basename}.restart
+restart 30000000 equil/kalj_T0.475_n360_v300_30000000_1.restart
+restart ${steps} ${basename}.final.lmprestart
+restart 30000000 ${basename}.final.lmprestart
+restart 30000000 equil/kalj_T0.475_n360_v300_30000000_1.final.lmprestart
+
+thermo ${thermotime}
+thermo 300000
+timestep ${timestep}
+timestep 0.003
+
+neighbor 0.5 bin
+neigh_modify every 1 delay ${neighborstep} check yes
+neigh_modify every 1 delay 25 check yes
+
+velocity all create ${temp} ${id} dist gaussian
+velocity all create 0.475 ${id} dist gaussian
+velocity all create 0.475 1 dist gaussian
+fix 1 all nvt temp ${temp} ${temp} ${taut}
+fix 1 all nvt temp 0.475 ${temp} ${taut}
+fix 1 all nvt temp 0.475 0.475 ${taut}
+fix 1 all nvt temp 0.475 0.475 0.3
+Resetting global fix info from restart file:
+  fix style: nvt, fix ID: 1
+run ${steps}
+run 30000000
+Generated 0 of 1 mixed pair_coeff terms from geometric mixing rule
+All restart file global fix info was re-assigned
+Neighbor list info ...
+  update: every = 1 steps, delay = 25 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 3
+  ghost atom cutoff = 3
+  binsize = 1.5, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.117 | 4.118 | 4.118 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0.475         -6.8919193      0             -6.1813985      3.7521638    
+    300000   0.49346679    -7.0166797      0             -6.2785357      3.0501898    
+    600000   0.46548941    -6.9277044      0             -6.2314098      3.528306     
+    900000   0.48221783    -6.9701332      0             -6.2488157      3.3144363    
+   1200000   0.44554413    -6.9589384      0             -6.2924786      3.4311011    
+   1500000   0.46134294    -7.0366136      0             -6.3465215      2.7990898    
+   1800000   0.46256137    -6.9586822      0             -6.2667675      3.3196378    
+   2100000   0.47441992    -7.0111997      0             -6.3015466      3.0228637    
+   2400000   0.49184216    -6.9996146      0             -6.2639007      3.2396079    
+   2700000   0.45870158    -6.9482112      0             -6.2620701      3.5627287    
+   3000000   0.49502012    -6.9367866      0             -6.196319       3.6355196    
+   3300000   0.45931913    -7.0163201      0             -6.3292553      3.1250925    
+   3600000   0.47313058    -6.9318186      0             -6.2240941      3.5963648    
+   3900000   0.50814922    -6.937466       0             -6.1773595      3.6951837    
+   4200000   0.47521911    -6.9563147      0             -6.2454661      3.4226303    
+   4500000   0.50325274    -6.9948689      0             -6.2420867      3.1860362    
+   4800000   0.47704605    -6.9681918      0             -6.2546104      3.3591259    
+   5100000   0.509561      -6.9931221      0             -6.2309038      3.1831842    
+   5400000   0.44489318    -7.0004484      0             -6.3349624      3.0840012    
+   5700000   0.46333388    -6.9682917      0             -6.2752215      3.3092854    
+   6000000   0.4937365     -6.9853591      0             -6.2468115      3.177797     
+   6300000   0.47190293    -6.9540435      0             -6.2481554      3.5424832    
+   6600000   0.47431972    -6.9549474      0             -6.2454442      3.3688406    
+   6900000   0.46078502    -6.9423071      0             -6.2530496      3.5105192    
+   7200000   0.47339352    -6.9820846      0             -6.2739668      3.1956266    
+   7500000   0.4959665     -6.9164122      0             -6.1745289      3.6529695    
+   7800000   0.50251254    -6.9219248      0             -6.1702498      3.6726706    
+   8100000   0.47449401    -6.9470608      0             -6.2372968      3.4361049    
+   8400000   0.52614865    -6.9235723      0             -6.1365416      3.6486743    
+   8700000   0.45469594    -6.9365083      0             -6.2563589      3.5275202    
+   9000000   0.49199636    -6.9957549      0             -6.2598104      3.2254927    
+   9300000   0.47012422    -6.9490815      0             -6.245854       3.4877934    
+   9600000   0.49095947    -6.9671741      0             -6.2327805      3.3905641    
+   9900000   0.49963484    -6.8630821      0             -6.1157117      4.1762874    
+  10200000   0.46091941    -6.9500304      0             -6.2605718      3.4608061    
+  10500000   0.46169634    -6.9214952      0             -6.2308745      3.6378243    
+  10800000   0.49055039    -6.9435446      0             -6.209763       3.5538029    
+  11100000   0.47567121    -6.9867075      0             -6.2751826      3.3779131    
+  11400000   0.49398794    -6.9599182      0             -6.2209945      3.4619313    
+  11700000   0.4880338     -6.8715372      0             -6.1415199      4.2125251    
+  12000000   0.48500039    -6.9692017      0             -6.2437219      3.4942175    
+  12300000   0.47258248    -6.9605268      0             -6.2536222      3.5506262    
+  12600000   0.49280586    -6.9279918      0             -6.1908364      3.8438097    
+  12900000   0.48022155    -6.9239088      0             -6.2055774      3.4991407    
+  13200000   0.44811576    -6.8440926      0             -6.1737861      3.9721085    
+  13500000   0.46129517    -6.9543694      0             -6.2643487      3.3879319    
+  13800000   0.48531554    -6.9004317      0             -6.1744806      3.7624589    
+  14100000   0.49689174    -6.9456572      0             -6.20239        3.5705397    
+  14400000   0.48936101    -6.9664445      0             -6.234442       3.3862994    
+  14700000   0.49664272    -6.9710036      0             -6.2281088      3.2645327    
+  15000000   0.47696974    -6.9780671      0             -6.2645999      3.2678573    
+  15300000   0.48903057    -6.9597794      0             -6.2282712      3.4312216    
+  15600000   0.49122188    -6.9199139      0             -6.1851278      3.7417996    
+  15900000   0.47669955    -6.9702764      0             -6.2572133      3.2763834    
+  16200000   0.44021421    -6.9551293      0             -6.2966423      3.2396128    
+  16500000   0.47948758    -6.9599481      0             -6.2427146      3.4151908    
+  16800000   0.51169218    -6.9811338      0             -6.2157275      3.2835065    
+  17100000   0.47029914    -6.9172057      0             -6.2137166      3.6898657    
+  17400000   0.47523509    -6.9211212      0             -6.2102487      3.6592371    
+  17700000   0.45061642    -6.9480527      0             -6.2740056      3.4677195    
+  18000000   0.49045434    -6.9701349      0             -6.236497       3.2860604    
+  18300000   0.50203988    -6.9381428      0             -
